@@ -141,10 +141,10 @@ final class Plugin
         $ucrm_root = realpath($vend_root."/../");
 
         // IF the next two upper directories are recognized as composer's vendor folder and this package name...
-        if(dirname($mvqn_root) === "mvqn" && $vend_root === "vendor")
+        if(basename($mvqn_root) === "mvqn" && basename($vend_root) === "vendor")
         {
             // IF the current folder iz 'zip' then we are probably using the preferred/template folder structure...
-            if(dirname($ucrm_root) === "zip")
+            if(basename($ucrm_root) === "zip")
             {
                 // SO, adjust the root path one more time.
                 $ucrm_root = realpath($ucrm_root . "/../");
