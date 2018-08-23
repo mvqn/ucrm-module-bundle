@@ -338,6 +338,11 @@ final class Plugin
             exit("Unable to create $file_name!\n");
         }
 
+        // Save the current working directory and move to the root of the project for the next steps!
+        $old_dir = getcwd();
+        chdir($root);
+
+        // Loop through each file in the list...
         foreach ($files as $file) {
             // Ensure .zipignore directory separators are converted to OS separators.
             $path = str_replace("/", DIRECTORY_SEPARATOR, $file);
@@ -357,6 +362,9 @@ final class Plugin
 
         // Close the archive, we're all finished!
         $zip->close();
+
+        // Return to the previous working directory.
+        chdir($old_dir);
     }
 
 
