@@ -312,7 +312,7 @@ final class Plugin
         foreach ($files as $file) {
             // Ensure .zipignore directory separators are converted to OS separators.
             //$path = str_replace("/", DIRECTORY_SEPARATOR, $file);
-            $path = file;
+            $path = $file;
 
             // Remove the leading folder, as we do not want that structure in the ZIP archive.
             $local = str_replace("zip/", "", $path);
