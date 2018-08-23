@@ -1,15 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace UCRM\Bundle;
-//require_once __DIR__."/../../../vendor/autoload.php";
+namespace UCRM\Core;
 
 /**
  * Class Bundler
  *
- * @package UCRM\Plugins
+ * @package UCRM\Core
  */
-final class Bundler
+final class Bundle
 {
     // =================================================================================================================
     // CONSTANTS
@@ -78,7 +77,7 @@ final class Bundler
      * @param string $root Path to root of the project.
      * @param string $ignore Path to the optional .zipignore file.
      */
-    public static function bundle(string $root = "", string $ignore = ""): void
+    public static function create(string $root = "", string $ignore = ""): void
     {
         echo "Bundling...\n";
 

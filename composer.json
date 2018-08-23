@@ -19,8 +19,5 @@
         "psr-4": {
             "UCRM\\": "src/UCRM/"
         }
-    },
-    "bin": [
-        "bin/upm"
-    ]
+    }
 }
