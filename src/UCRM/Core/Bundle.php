@@ -21,6 +21,9 @@ final class Bundle
         DIRECTORY_SEPARATOR."..".
         DIRECTORY_SEPARATOR."..".
         DIRECTORY_SEPARATOR."..".
+        DIRECTORY_SEPARATOR."..".
+        DIRECTORY_SEPARATOR."..".
+        DIRECTORY_SEPARATOR."..".
         DIRECTORY_SEPARATOR;
 
     /** @const string The default ignore file path. */
