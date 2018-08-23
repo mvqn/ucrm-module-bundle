@@ -59,6 +59,21 @@ final class Config implements JsonSerializable
 
 
 
+    public function getValues(): array
+    {
+        return $this->values;
+    }
+
+
+
+    public function getValue(string $key)
+    {
+        if(!array_key_exists($key, $this->values))
+            return null;
+
+        return $this->values[$key];
+    }
+
 
 
 }
