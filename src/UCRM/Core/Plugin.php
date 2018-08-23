@@ -20,22 +20,12 @@ final class Plugin
      * @const string The default project base path, when following the folder structure in <b>ucrm-plugin-template.</b>
      */
     private const DEFAULT_PLUGIN_PATH =
-        __DIR__.
-        DIRECTORY_SEPARATOR."..".
-        DIRECTORY_SEPARATOR."..".
-        DIRECTORY_SEPARATOR."..".
-        DIRECTORY_SEPARATOR."..".
-        DIRECTORY_SEPARATOR."..".
-        DIRECTORY_SEPARATOR."..".
-        DIRECTORY_SEPARATOR."..".
-        DIRECTORY_SEPARATOR;
-
+        __DIR__."/../../../../../../../";
     /**
      * @const string The default .zipignore file path, in the root of the project, including filename.
      */
     private const DEFAULT_IGNORE_PATH =
-        self::DEFAULT_PLUGIN_PATH.
-        ".zipignore";
+        self::DEFAULT_PLUGIN_PATH.".zipignore";
 
     // =================================================================================================================
     // PROPERTIES
@@ -170,12 +160,7 @@ final class Plugin
      */
     public static function dataPath(): string
     {
-        return realpath(
-            self::rootPath().
-            (self::$_usingZip ? DIRECTORY_SEPARATOR."zip" : "").
-            DIRECTORY_SEPARATOR."data".
-            DIRECTORY_SEPARATOR
-        );
+        return realpath(self::rootPath().(self::$_usingZip ? "/zip" : "")."/data/");
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -185,12 +170,7 @@ final class Plugin
      */
     public static function executing(): bool
     {
-        return file_exists(
-            self::rootPath().
-            (self::$_usingZip ? DIRECTORY_SEPARATOR."zip" : ""). // NEVER really going to be in the 'zip' folder here!
-            DIRECTORY_SEPARATOR.
-            ".ucrm-plugin-execution-requested"
-        );
+        return file_exists(self::rootPath().(self::$_usingZip ? "/zip" : "")."/.ucrm-plugin-execution-requested");
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -200,12 +180,8 @@ final class Plugin
      */
     public static function running(): bool
     {
-        return file_exists(
-            self::rootPath().
-            (self::$_usingZip ? DIRECTORY_SEPARATOR."zip" : ""). // NEVER really going to be in the 'zip' folder here!
-            DIRECTORY_SEPARATOR.
-            ".ucrm-plugin-running"
-        );
+        // NEVER really going to be in the 'zip' folder here!
+        return file_exists(self::rootPath().(self::$_usingZip ? "/zip" : "")."/.ucrm-plugin-running");
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -216,9 +192,7 @@ final class Plugin
      */
     public static function config(): Config
     {
-        $config_file =
-            self::dataPath().
-            DIRECTORY_SEPARATOR."config.json";
+        $config_file = self::dataPath()."/config.json";
 
         if(!file_exists($config_file))
             throw new RequiredFileNotFoundException(
@@ -237,10 +211,7 @@ final class Plugin
      */
     public static function manifest(): Manifest
     {
-        $manifest_file =
-            self::rootPath().
-            (self::$_usingZip ? DIRECTORY_SEPARATOR."zip" : "").
-            DIRECTORY_SEPARATOR."manifest.json";
+        $manifest_file = self::rootPath().(self::$_usingZip ? "/zip" : "")."/manifest.json";
 
         if(!file_exists($manifest_file))
             throw new RequiredFileNotFoundException(
@@ -268,10 +239,7 @@ final class Plugin
      */
     private static function data(): Data
     {
-        $data_file =
-            self::rootPath().
-            (self::$_usingZip ? DIRECTORY_SEPARATOR."zip" : "").
-            DIRECTORY_SEPARATOR."ucrm.json";
+        $data_file = self::rootPath().(self::$_usingZip ? "/zip" : "")."/ucrm.json";
 
         if(!file_exists($data_file))
             throw new RequiredFileNotFoundException(
@@ -295,13 +263,11 @@ final class Plugin
     {
         echo "Bundling...\n";
 
-        //$root = realpath($root ?: self::DEFAULT_PLUGIN_PATH);
-        //$ignore = realpath($ignore ?: self::DEFAULT_IGNORE_PATH);
         $root = realpath($root ?: self::rootPath());
-        $ignore = realpath($ignore ?: self::rootPath().DIRECTORY_SEPARATOR.".zipignore");
+        $ignore = realpath($ignore ?: self::rootPath()."/.zipignore");
 
         $archive_name = basename($root);
-        $archive_path = $root.DIRECTORY_SEPARATOR."zip".DIRECTORY_SEPARATOR;
+        $archive_path = $root."/zip/";
 
         echo "$archive_path => $archive_name.zip\n";
 
@@ -319,7 +285,7 @@ final class Plugin
                 continue;
 
             $path = str_replace($root, "", $real_path); // Remove base path from the path string.
-            $path = str_replace(DIRECTORY_SEPARATOR, "/", $path); // Match .zipignore format
+            $path = str_replace("\\", "/", $path); // Match .zipignore format
             $path = substr($path, 1, strlen($path) - 1);
 
             if (!self::inIgnoreFile($path, $ignore))
@@ -332,7 +298,7 @@ final class Plugin
         }
 
         $zip = new \ZipArchive();
-        $file_name = $root.DIRECTORY_SEPARATOR."$archive_name.zip";
+        $file_name = $root."/$archive_name.zip";
 
         if ($zip->open($file_name, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
             exit("Unable to create $file_name!\n");
@@ -345,10 +311,11 @@ final class Plugin
         // Loop through each file in the list...
         foreach ($files as $file) {
             // Ensure .zipignore directory separators are converted to OS separators.
-            $path = str_replace("/", DIRECTORY_SEPARATOR, $file);
+            //$path = str_replace("/", DIRECTORY_SEPARATOR, $file);
+            $path = file;
 
             // Remove the leading folder, as we do not want that structure in the ZIP archive.
-            $local = str_replace("zip" . DIRECTORY_SEPARATOR, "", $path);
+            $local = str_replace("zip/", "", $path);
 
             // Add the file to the archive.
             $zip->addFile($path, $local);
