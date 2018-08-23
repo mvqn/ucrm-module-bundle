@@ -8,13 +8,15 @@ namespace UCRM\Core;
  *
  * @package UCRM\Core
  */
-final class Bundle
+final class Plugin
 {
     // =================================================================================================================
     // CONSTANTS
     // -----------------------------------------------------------------------------------------------------------------
 
-    /** @const string The default project base path. */
+    /**
+     * @const string The default project base path, when following the folder structure in <b>ucrm-plugin-template.</b>
+     */
     private const DEFAULT_PLUGIN_PATH =
         __DIR__.
         DIRECTORY_SEPARATOR."..".
@@ -26,7 +28,9 @@ final class Bundle
         DIRECTORY_SEPARATOR."..".
         DIRECTORY_SEPARATOR;
 
-    /** @const string The default ignore file path. */
+    /**
+     * @const string The default .zipignore file path, in the root of the project, including filename.
+     */
     private const DEFAULT_IGNORE_PATH =
         self::DEFAULT_PLUGIN_PATH.
         ".zipignore";
@@ -80,12 +84,12 @@ final class Bundle
      * @param string $root Path to root of the project.
      * @param string $ignore Path to the optional .zipignore file.
      */
-    public static function create(string $root = "", string $ignore = ""): void
+    public static function bundle(string $root = "", string $ignore = ""): void
     {
         echo "Bundling...\n";
 
-        $root = $root ?: realpath(self::DEFAULT_PLUGIN_PATH);
-        $ignore = $ignore ?: realpath(self::DEFAULT_IGNORE_PATH);
+        $root = realpath($root ?: self::DEFAULT_PLUGIN_PATH);
+        $ignore = realpath($ignore ?: self::DEFAULT_IGNORE_PATH);
 
         $archive_name = basename($root);
         $archive_path = $root.DIRECTORY_SEPARATOR."zip".DIRECTORY_SEPARATOR;
