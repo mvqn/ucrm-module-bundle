@@ -1,0 +1,23 @@
+{
+    "name": "mvqn/ucrm-module-core",
+    "description": "UCRM Plugin module for bundling a plugin.",
+    "minimum-stability": "stable",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ryan Spaeth",
+            "email": "rspaeth@mvqn.net"
+        }
+    ],
+    "require": {
+        "php": "~7.1"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4": {
+            "UCRM\\": "src/UCRM/"
+        }
+    }
+}
