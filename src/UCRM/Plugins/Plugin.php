@@ -1,14 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace UCRM\Core;
+namespace UCRM\Plugins;
 
-use UCRM\Exceptions\RequiredFileNotFoundException;
 
 /**
  * Class Bundler
  *
- * @package UCRM\Core
+ * @package UCRM\Plugins
  */
 final class Plugin
 {

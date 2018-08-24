@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace UCRM\Core;
+namespace UCRM\Plugins;
 
 use JsonSerializable;
 
@@ -35,7 +35,7 @@ final class ConfigItem implements JsonSerializable
      * - text       Standard text input
      * - textarea   Multi-line text input
      * - checkbox   True/False values
-     * - choice     Dropdown list with pre-defined options (see also "choices")
+     * - choice     Drop-down list with pre-defined options (see also "choices")
      * - date       Date input with calendar
      * - datetime   Date and time input with calendar
      * - file       File upload input (file name will be the same as "key", saved in "data/config.json" and the file

@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace UCRM\Core;
-
-use UCRM\Exceptions\RequiredFileNotFoundException;
+namespace UCRM\Plugins;
 
 
 final class Log

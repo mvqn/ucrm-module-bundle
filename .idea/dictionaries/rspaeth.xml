@@ -2,8 +2,10 @@
   <dictionary name="rspaeth">
     <words>
       <w>bundler</w>
+      <w>docblock</w>
       <w>mvqn</w>
       <w>spaeth</w>
+      <w>textarea</w>
       <w>ucrm</w>
       <w>zipignore</w>
     </words>

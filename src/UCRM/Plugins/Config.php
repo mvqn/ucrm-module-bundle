@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace UCRM\Core;
+namespace UCRM\Plugins;
 
 use JsonSerializable;
 
