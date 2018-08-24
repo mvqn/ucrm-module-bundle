@@ -87,9 +87,6 @@ class AnnotationReader
                     $count++;
             }
 
-            //if($key === "var")
-            //    continue;
-
             // Handle JSON objects!
             if(preg_match($this->json_pattern, $value, $match))
             {
@@ -108,26 +105,28 @@ class AnnotationReader
                 $value = eval("return ".$value.";");
             }
 
+            if(is_array($value))
+                $value = array_map("trim", $value);
+            else
+                $value = trim($value);
+
             if($count > 1)
             {
                 if(!array_key_exists($key, $params))
                 {
-                    $params[$key] = trim($value);
+                    $params[$key] = $value;
                 }
                 else
                 {
                     if(!is_array($value))
                         throw new AnnotationReaderException("Malformed annotation entry found: '$value'");
 
-                    $params[$key] = array_merge($params[$key], trim($value));
+                    $params[$key] = array_merge($params[$key], $value);
                 }
             }
             else
             {
-                if(is_array($value))
-                    $params[$key] = array_map("trim", $value);
-                else
-                    $params[$key] = trim($value);
+                $params[$key] = $value;
             }
 
         }
@@ -190,7 +189,7 @@ class AnnotationReader
             $info["types"] = array_map(
                 function($value)
                 {
-                    //$value = str_replace("[]", "", $value);
+                    $value = str_replace("[]", "", $value);
                     return trim($value);
                 },
                 array_filter(explode("|", $matches[1]))
