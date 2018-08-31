@@ -60,7 +60,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     public function __toString()
     {
         // Return the array as a JSON string.
-        return json_encode($this, JSON_UNESCAPED_SLASHES);
+        return json_encode($this, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 
     #endregion
@@ -158,7 +158,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
      */
     public function elements(): array
     {
-        return $this->elements;
+        return $this->elements !== null ? $this->elements : [];
     }
 
     /**
