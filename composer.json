@@ -12,6 +12,7 @@
     ],
     "require": {
         "php": "~7.1",
+        "ext-curl": "*",
         "ext-json": "*",
         "ext-zip": "*"
     },
@@ -22,8 +23,12 @@
         "psr-4": {
             "MVQN\\": "src/MVQN/",
             "UCRM\\": "src/UCRM/",
-
             "Tests\\": "tests/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "UCRM\\": "tests/UCRM/"
         }
     }
 }

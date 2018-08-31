@@ -1,6 +1,6 @@
 <?php
 
-use MVQN\Annotations\{AnnotationReader, AnnotationReaderException};
+use MVQN\Annotations\{ClassAnnotationReader, AnnotationReaderException};
 use Tests\MVQN\Annotations\Examples\Country;
 
 class AnnotationReaderTests extends PHPUnit\Framework\TestCase
@@ -9,22 +9,22 @@ class AnnotationReaderTests extends PHPUnit\Framework\TestCase
     public function test__construct()
     {
         // Class DocBlock
-        $class = new AnnotationReader(Country::class);
+        $class = new ClassAnnotationReader(Country::class);
         $this->assertNotNull($class);
 
         // Property DocBlock
-        $property = new AnnotationReader(Country::class, "name", "property");
+        $property = new ClassAnnotationReader(Country::class, "name", "property");
         $this->assertNotNull($property);
 
         // Method DocBlock
-        $method = new AnnotationReader(Country::class, "getName", "method");
+        $method = new ClassAnnotationReader(Country::class, "getName", "method");
         $this->assertNotNull($method);
     }
 
     public function testGetParameters()
     {
         // Class DocBlock
-        $class = new AnnotationReader(Country::class);
+        $class = new ClassAnnotationReader(Country::class);
         $this->assertNotNull($class);
 
         $parameters = $class->getParameters();
@@ -32,7 +32,7 @@ class AnnotationReaderTests extends PHPUnit\Framework\TestCase
         $this->assertEquals("/countries/:id", $parameters["endpoints"]["getById"]);
 
         // Property DocBlock
-        $property = new AnnotationReader(Country::class, "name", "property");
+        $property = new ClassAnnotationReader(Country::class, "name", "property");
         $this->assertNotNull($property);
 
         $parameters = $property->getParameters();
@@ -40,7 +40,7 @@ class AnnotationReaderTests extends PHPUnit\Framework\TestCase
         $this->assertEquals("string|null \$name The country's name.", $parameters["var"]);
 
         // Method DocBlock
-        $method = new AnnotationReader(Country::class, "getName", "method");
+        $method = new ClassAnnotationReader(Country::class, "getName", "method");
         $this->assertNotNull($method);
 
         $parameters = $method->getParameters();
@@ -53,7 +53,7 @@ class AnnotationReaderTests extends PHPUnit\Framework\TestCase
     public function testGetParameter()
     {
         // Class DocBlock
-        $class = new AnnotationReader(Country::class);
+        $class = new ClassAnnotationReader(Country::class);
         $this->assertNotNull($class);
 
         $parameter = $class->getParameter("author");
@@ -61,7 +61,7 @@ class AnnotationReaderTests extends PHPUnit\Framework\TestCase
         $this->assertEquals("Ryan Spaeth <rspaeth@mvqn.net>", $parameter);
 
         // Property DocBlock
-        $property = new AnnotationReader(Country::class, "name", "property");
+        $property = new ClassAnnotationReader(Country::class, "name", "property");
         $this->assertNotNull($property);
 
         $parameter = $property->getParameter("var");
@@ -69,7 +69,7 @@ class AnnotationReaderTests extends PHPUnit\Framework\TestCase
         $this->assertEquals("string|null \$name The country's name.", $parameter);
 
         // Method DocBlock
-        $method = new AnnotationReader(Country::class, "getName", "method");
+        $method = new ClassAnnotationReader(Country::class, "getName", "method");
         $this->assertNotNull($method);
 
         $parameter = $method->getParameter("return");
@@ -82,28 +82,28 @@ class AnnotationReaderTests extends PHPUnit\Framework\TestCase
     public function testHasParameter()
     {
         // Class DocBlock
-        $class = new AnnotationReader(Country::class);
+        $class = new ClassAnnotationReader(Country::class);
         $this->assertNotNull($class);
 
         $parameter = $class->hasParameter("author");
         $this->assertEquals(true, $parameter);
 
         // Property DocBlock
-        $property = new AnnotationReader(Country::class, "name", "property");
+        $property = new ClassAnnotationReader(Country::class, "name", "property");
         $this->assertNotNull($property);
 
         $parameter = $property->hasParameter("var");
         $this->assertEquals(true, $parameter);
 
         // Method DocBlock
-        $method = new AnnotationReader(Country::class, "getName", "method");
+        $method = new ClassAnnotationReader(Country::class, "getName", "method");
         $this->assertNotNull($method);
 
         $parameter = $method->hasParameter("return");
         $this->assertEquals(true, $parameter);
 
         // Method DocBlock
-        $method = new AnnotationReader(Country::class, "getName", "method");
+        $method = new ClassAnnotationReader(Country::class, "getName", "method");
         $this->assertNotNull($method);
 
         $parameter = $method->hasParameter("param");
@@ -113,7 +113,7 @@ class AnnotationReaderTests extends PHPUnit\Framework\TestCase
     public function testGetPropertyInfo()
     {
         // Property DocBlock
-        $property = new AnnotationReader(Country::class, "name", "property");
+        $property = new ClassAnnotationReader(Country::class, "name", "property");
         $this->assertNotNull($property);
 
         $parameters = $property->getPropertyInfo();
@@ -130,7 +130,7 @@ class AnnotationReaderTests extends PHPUnit\Framework\TestCase
         try
         {
             // Property DocBlock
-            $property = new AnnotationReader(Country::class, "unknown", "property");
+            $property = new ClassAnnotationReader(Country::class, "unknown", "property");
             $this->assertNotNull($property);
         }
         catch(\ReflectionException $re)
@@ -147,7 +147,7 @@ class AnnotationReaderTests extends PHPUnit\Framework\TestCase
         try
         {
             // Property DocBlock
-            $method = new AnnotationReader(Country::class, "getName", "method");
+            $method = new ClassAnnotationReader(Country::class, "getName", "method");
             $this->assertNotNull($method);
 
             $parameters = $method->getPropertyInfo();
