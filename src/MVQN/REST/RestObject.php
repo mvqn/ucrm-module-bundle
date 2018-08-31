@@ -83,7 +83,7 @@ class RestObject extends Collectible implements \JsonSerializable
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * Converts the RestObject to it's JSON representation, removing and values that should not be provided given the
+     * Converts the RestObject to it's JSON representation, removing any values that should not be provided given the
      * specified HTTP method/verb and optionally removing all null fields not specifically annotated with '@keepNull' or
      * '@keepNullElements'.
      *
