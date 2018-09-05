@@ -15,6 +15,9 @@ use UCRM\REST\Endpoints\Helpers\CountryHelper;
  * @final
  *
  * @Endpoints { "get": "/countries", "getById": "/countries/:id" }
+ *
+ * @method string|null getName()
+ * @method string|null getCode()
  */
 final class Country extends Endpoint
 {
@@ -29,27 +32,11 @@ final class Country extends Endpoint
      */
     protected $name;
 
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
      */
     protected $code;
-
-    /**
-     * @return string|null
-     */
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
 
 }

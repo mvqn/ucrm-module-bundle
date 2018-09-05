@@ -63,6 +63,26 @@ class RestClientTests extends PHPUnit\Framework\TestCase
     }
 
 
+    public function testCall()
+    {
+        $country = new Country([
+            "id" => 249,
+            "name" => "United States",
+            "code" => "US"
+        ]);
+
+        echo $country."\n";
+
+        echo $country->getName()."\n";
+
+        $country->getName();
+
+
+        //echo $country->getName()."\n";
+
+
+    }
+
 
 
 

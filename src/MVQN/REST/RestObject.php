@@ -54,6 +54,42 @@ class RestObject extends Collectible implements \JsonSerializable
         return json_encode($this, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 
+
+
+
+    public function __call(string $name, array $args)
+    {
+        if(Strings::startsWith($name, "get"))
+        {
+            $property = lcfirst(str_replace("get", "", $name));
+
+            if(property_exists($this, $property))
+                return $this->{$property};
+            else
+                throw new \Exception("");
+        }
+
+        if(Strings::startsWith($name, "set"))
+        {
+            $property = lcfirst(str_replace("set", "", $name));
+
+            if(property_exists($this, $property))
+                $this->{$property} = $args[0];
+            else
+                throw new \Exception("");
+        }
+
+        // Handle all other methods as usual!
+
+    }
+
+    public static function __callStatic(string $name, array $args)
+    {
+
+    }
+
+
+
     // =================================================================================================================
     // INTERFACE IMPLEMENTATIONS
     // -----------------------------------------------------------------------------------------------------------------
