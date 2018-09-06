@@ -5,7 +5,6 @@ namespace MVQN\REST\Annotations;
 
 use MVQN\Annotations\Annotation;
 use MVQN\Annotations\AnnotationReader;
-use MVQN\Annotations\AnnotationReaderException;
 
 final class PostRequiredAnnotation extends Annotation
 {
@@ -15,12 +14,12 @@ final class PostRequiredAnnotation extends Annotation
      * @param string|null $name
      * @return array|null
      *
-     * @throws AnnotationReaderException
+     * @throws \Exception
      */
     public function parse(array $existing = [], string &$name = null): array
     {
         if($this->type !== AnnotationReader::ANNOTATION_TYPE_PROPERTY)
-            throw new AnnotationReaderException("@PostRequired is only supported for properties!");
+            throw new \Exception("[MVQN\Annotations\AnnotationReader] @PostRequired is only supported for properties!");
 
         $name = "post-required";
 

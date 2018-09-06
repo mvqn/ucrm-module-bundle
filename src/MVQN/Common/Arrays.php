@@ -29,7 +29,8 @@ final class Arrays
         foreach ($steps as $step)
         {
             if (!is_array($current) || !array_key_exists($step, $current))
-                throw new ArraysException("Could not traverse the path '$path' in ".print_r($array, true));
+                throw new \Exception("[MVQN\Common\Arrays] Could not traverse the path '$path' in ".
+                    print_r($array, true)."!");
 
             $current = $current[$step];
         }

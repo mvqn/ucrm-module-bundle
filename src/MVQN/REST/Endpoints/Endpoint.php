@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace MVQN\REST\Endpoints;
 
-use MVQN\Annotations\{AnnotationReader, AnnotationReaderException};
-use MVQN\Collections\{Collection, CollectionException};
-use MVQN\Common\{Arrays, Patterns, PatternsException};
+use MVQN\Annotations\AnnotationReader;
+use MVQN\Collections\Collection;
+use MVQN\Common\{Arrays, Patterns};
 
-use MVQN\REST\{RestObject, RestObjectException, RestClient, RestClientException};
+use MVQN\REST\{RestObject, RestClient};
 
 /**
  * Class Endpoint
@@ -44,12 +44,7 @@ abstract class Endpoint extends RestObject
      *
      * @return self Returns an Endpoint of the same child object that called this method.
      *
-     * @throws AnnotationReaderException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws RestObjectException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function insert(): self
     {
@@ -58,7 +53,7 @@ abstract class Endpoint extends RestObject
 
         if(!$this->validate("post", $missing))
         {
-            throw new EndpointException("Annotations for the '".get_class($this)."' class require valid values be set ".
+            throw new \Exception("[MVQN\REST\Endpoints\Endpoint] Annotations for the '".get_class($this)."' class require valid values be set ".
                 "on all of the following properties before attempting an insert():\n> ".implode("\n> ", $missing)."\n");
         }
 
@@ -76,12 +71,7 @@ abstract class Endpoint extends RestObject
      * @param array $params An optional set of parameters to be interpolated into the URL, when placeholders are used.
      * @return Endpoint Returns the newly POSTed Endpoint.
      *
-     * @throws AnnotationReaderException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws RestObjectException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public static function post(Endpoint $data, array $params = []): Endpoint
     {
@@ -94,7 +84,7 @@ abstract class Endpoint extends RestObject
         $endpoint = array_key_exists("post", $endpoints) ? $endpoints["post"] : null;
 
         if($endpoint === null || $endpoint === [])
-            throw new EndpointException("An annotation like '@endpoints { \"post\": \"/examples\" }' on the '$class' ".
+            throw new \Exception("[MVQN\REST\Endpoints\Endpoint] An annotation like '@endpoints { \"post\": \"/examples\" }' on the '$class' ".
                 "class must be declared in order to resolve this endpoint'");
 
         // Interpolate the URL patterns against any provided parameters.
@@ -109,7 +99,7 @@ abstract class Endpoint extends RestObject
         // IF the response is empty, something went VERY wrong!
         if($response === [])
         {
-            throw new EndpointException("WTF???");
+            throw new \Exception("WTF???");
             //return [];
         }
 
@@ -118,10 +108,10 @@ abstract class Endpoint extends RestObject
         {
             switch($response["code"])
             {
-                case 401: throw new EndpointException("The REST Client was not authorized to make this request!");
-                case 403: throw new EndpointException("The provided App Key does not have sufficient privileges!");
-                case 404: throw new EndpointException("Endpoint '$endpoint' was not found for class '$class'!");
-                case 422: throw new EndpointException("Data for endpoint '$endpoint' was improperly formatted!\n".
+                case 401: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] The REST Client was not authorized to make this request!");
+                case 403: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] The provided App Key does not have sufficient privileges!");
+                case 404: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] Endpoint '$endpoint' was not found for class '$class'!");
+                case 422: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] Data for endpoint '$endpoint' was improperly formatted!\n".
                     $response["message"]."\n".
                     json_encode($response["errors"], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
                 );
@@ -148,10 +138,7 @@ abstract class Endpoint extends RestObject
      * @param array $query An optional set of query parameters to append to the end of the Endpoint URL.
      * @return Collection Returns a Collection of Endpoint objects; empty if none are found.
      *
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
+     * @throws \Exception
      */
     public static function get(string $override = "", array $params = [], array $query = []): Collection
     {
@@ -172,7 +159,7 @@ abstract class Endpoint extends RestObject
 
             // Make certain we have found a valid set of GET annotations, or throw an error!
             if (!array_key_exists("get", $endpoints) || $endpoints["get"] === "")
-                throw new EndpointException("An '@Endpoint { \"get\": \"/examples\" }' annotation on the class must " .
+                throw new \Exception("[MVQN\REST\Endpoints\Endpoint] An '@Endpoint { \"get\": \"/examples\" }' annotation on the class must " .
                     "be declared in order to resolve this endpoint'");
 
             // Interpolate the URL patterns against any provided parameters.
@@ -209,9 +196,9 @@ abstract class Endpoint extends RestObject
         {
             switch($response["code"])
             {
-                case 401: throw new EndpointException("The REST Client was not authorized to make this request!");
-                case 403: throw new EndpointException("The provided App Key does not have sufficient privileges!");
-                case 404: throw new EndpointException("Endpoint '$endpoint' was not found for class '$class'!");
+                case 401: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] The REST Client was not authorized to make this request!");
+                case 403: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] The provided App Key does not have sufficient privileges!");
+                case 404: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] Endpoint '$endpoint' was not found for class '$class'!");
 
                 // TODO: Add other response codes, as they are encountered!
 
@@ -250,9 +237,7 @@ abstract class Endpoint extends RestObject
      * @param int $id The ID of the Endpoint for which to retrieve.
      * @return Endpoint|null Returns the Endpoint object, or NULL if the object can not be found with this ID.
      *
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
+     * @throws \Exception
      */
     public static function getById(int $id): ?Endpoint
     {
@@ -265,7 +250,7 @@ abstract class Endpoint extends RestObject
 
         // Make certain we have found a valid set of GET annotations, or throw an error!
         if(!array_key_exists("getById", $endpoints))
-            throw new EndpointException("An '@EndpointAnnotation { \"getById\": \"/examples/:id\" }' annotation on ".
+            throw new \Exception("[MVQN\REST\Endpoints\Endpoint] An '@EndpointAnnotation { \"getById\": \"/examples/:id\" }' annotation on ".
                 "the '$class' class must be declared in order to resolve this endpoint'");
 
         // Interpolate the URL patterns against any provided parameters.
@@ -284,9 +269,9 @@ abstract class Endpoint extends RestObject
         {
             switch($response["code"])
             {
-                case 401: throw new EndpointException("The REST Client was not authorized to make this request!");
-                case 403: throw new EndpointException("The provided App Key does not have sufficient privileges!");
-                case 404: throw new EndpointException("Endpoint '$endpoint' was not found for class '$class'!");
+                case 401: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] The REST Client was not authorized to make this request!");
+                case 403: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] The provided App Key does not have sufficient privileges!");
+                case 404: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] Endpoint '$endpoint' was not found for class '$class'!");
 
                 // TODO: Add other response codes, as they are encountered!
 
@@ -307,12 +292,7 @@ abstract class Endpoint extends RestObject
      *
      * @return self Returns an Endpoint of the same child object that called this method.
      *
-     * @throws AnnotationReaderException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws RestObjectException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function update(): self
     {
@@ -321,7 +301,7 @@ abstract class Endpoint extends RestObject
 
         if(!$this->validate("patch", $missing))
         {
-            throw new EndpointException("Annotations for the '".get_class($this)."' class require valid values be set ".
+            throw new \Exception("[MVQN\REST\Endpoints\Endpoint] Annotations for the '".get_class($this)."' class require valid values be set ".
                 "on all of the following properties before attempting an update():\n> ".implode("\n> ", $missing)."\n");
         }
 
@@ -341,12 +321,7 @@ abstract class Endpoint extends RestObject
      * @param string $suffix An optional suffix to append to the end of the Endpoint URL.
      * @return Endpoint|null Returns the newly patched Endpoint, or NULL in the case of failure or no data required.
      *
-     * @throws AnnotationReaderException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws RestObjectException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public static function patch(?Endpoint $data, array $params = [], string $suffix = ""): ?Endpoint
     {
@@ -360,7 +335,7 @@ abstract class Endpoint extends RestObject
         $endpoint = array_key_exists("patch", $endpoints) ? $endpoints["patch"] : null;
 
         if($endpoint === null || $endpoint === [])
-            throw new EndpointException("An annotation like '@endpoints { \"patch\": \"/examples/:id\" }' on the ".
+            throw new \Exception("[MVQN\REST\Endpoints\Endpoint] An annotation like '@endpoints { \"patch\": \"/examples/:id\" }' on the ".
                 "'$class' class must be declared in order to resolve this endpoint'");
 
         // Interpolate the URL patterns against any provided parameters.
@@ -379,7 +354,7 @@ abstract class Endpoint extends RestObject
         // IF the response is empty, something went VERY wrong!
         if($response === [])
         {
-            throw new EndpointException("WTF???");
+            throw new \Exception("WTF???");
             //return [];
         }
 
@@ -388,10 +363,10 @@ abstract class Endpoint extends RestObject
         {
             switch($response["code"])
             {
-                case 401: throw new EndpointException("The REST Client was not authorized to make this request!");
-                case 403: throw new EndpointException("The provided App Key does not have sufficient privileges!");
-                case 404: throw new EndpointException("Endpoint '$endpoint' was not found for class '$class'!");
-                case 422: throw new EndpointException("Data for endpoint '$endpoint' was improperly formatted!\n".
+                case 401: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] The REST Client was not authorized to make this request!");
+                case 403: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] The provided App Key does not have sufficient privileges!");
+                case 404: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] Endpoint '$endpoint' was not found for class '$class'!");
+                case 422: throw new \Exception("[MVQN\REST\Endpoints\Endpoint] Data for endpoint '$endpoint' was improperly formatted!\n".
                     $response["message"]."\n".
                     json_encode($response["errors"], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
                 );

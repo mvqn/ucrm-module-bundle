@@ -5,7 +5,6 @@ namespace MVQN\REST\Annotations;
 
 use MVQN\Annotations\Annotation;
 use MVQN\Annotations\AnnotationReader;
-use MVQN\Annotations\AnnotationReaderException;
 
 final class EndpointAnnotation extends Annotation
 {
@@ -18,12 +17,12 @@ final class EndpointAnnotation extends Annotation
      * @param array $existing
      * @param string|null $name
      * @return array|null
-     * @throws AnnotationReaderException
+     * @throws \Exception
      */
     public function parse(array $existing = [], string &$name = null): array
     {
         if($this->type !== AnnotationReader::ANNOTATION_TYPE_CLASS)
-            throw new AnnotationReaderException("@Endpoints is only supported for classes!");
+            throw new \Exception("[MVQN\Annotations\AnnotationReader] @Endpoints is only supported for classes!");
 
         $name = "endpoints";
 

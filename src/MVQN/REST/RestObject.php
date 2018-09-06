@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace MVQN\REST;
 
-use MVQN\Annotations\{AnnotationReader, AnnotationReaderException};
+use MVQN\Annotations\AnnotationReader;
 use MVQN\Common\Arrays;
 use MVQN\Common\AutoObject;
 use MVQN\Common\Strings;
@@ -98,9 +98,7 @@ class RestObject extends AutoObject implements \JsonSerializable
      * @param bool $filter A flag to request the resulting JSON be stripped of fields containing null values.
      * @param int $options Any optional <b>json_encode</b> options to be used.
      * @return string Returns a JSON string prepared for provision to any HTTP REST request body.
-     * @throws AnnotationReaderException Throws an exception if any errors occurred during parsing of the annotations.
-     * @throws RestObjectException Throws an exception if any errors occurred during the preparation process.
-     * @throws \ReflectionException Throws an exception if any errors occurred while using the Reflection engine.
+     * @throws \Exception
      */
     public function toJSON(string $method = "", bool $filter = true, int $options = 0): string
     {
@@ -131,7 +129,7 @@ class RestObject extends AutoObject implements \JsonSerializable
 
             // ERROR if we are unable to find the 'types' part of the @var DocBlock!
             if(!array_key_exists("types", $info))
-                throw new AnnotationReaderException("Unable to successfully parse the DocBlock for '$name', ".
+                throw new \Exception("[MVQN\Annotations\AnnotationReader] Unable to successfully parse the DocBlock for '$name', ".
                     "missing @var type!");
 
             // Set the 'type' from the property info collection.
@@ -194,7 +192,7 @@ class RestObject extends AutoObject implements \JsonSerializable
                                 // OTHERWISE, the child is an Array and we should create a Lookup class for it!
 
                                 // We should NEVER reach this block, in theory!
-                                throw new RestObjectException("An array was found for which a Lookup class should be ".
+                                throw new \Exception("[MVQN\REST\RestObject] An array was found for which a Lookup class should be ".
                                     "created: ".print_r($child, true));
                             }
                         }
@@ -205,7 +203,7 @@ class RestObject extends AutoObject implements \JsonSerializable
                         // forgot to extend the Lookup class.
 
                         // We should NEVER reach this block, in theory!
-                        throw new RestObjectException("An object was found that does not extend from Lookup: $type");
+                        throw new \Exception("[MVQN\REST\RestObject] An object was found that does not extend from Lookup: $type");
                     }
                 }
                 else
@@ -242,9 +240,7 @@ class RestObject extends AutoObject implements \JsonSerializable
      * @param string $method The HTTP method/verb for which to examine each property for exclusion.
      * @param bool $filter A flag to request the resulting JSON be stripped of fields containing null values.
      * @return array Returns an associative array prepared for provision to any HTTP REST request body.
-     * @throws AnnotationReaderException Throws an exception if any errors occurred during parsing of the annotations.
-     * @throws RestObjectException Throws an exception if any errors occurred during the preparation process.
-     * @throws \ReflectionException Throws an exception if any errors occurred while using the Reflection engine.
+     * @throws \Exception
      */
     public function toArray(string $method = "", bool $filter = false): array
     {
@@ -264,8 +260,7 @@ class RestObject extends AutoObject implements \JsonSerializable
      * @param string $method The HTTP method/verb for which to examine each property for validity.
      * @param array|null $missing A reference array used to store the missing/unset properties for later use.
      * @return bool Returns TRUE if all required properties have a value set, otherwise FALSE.
-     * @throws AnnotationReaderException Throws an exception if any errors occurred during parsing of the annotations.
-     * @throws \ReflectionException Throws an exception if any errors occurred while using the Reflection engine.
+     * @throws \Exception
      */
     public function validate(string $method, array &$missing = null): bool
     {
@@ -307,7 +302,7 @@ class RestObject extends AutoObject implements \JsonSerializable
                 }
                 else
                 {
-                    throw new AnnotationReaderException("An annotation of '@{$method}-required' needs to either have a ".
+                    throw new \Exception("[MVQN\Annotations\AnnotationReader] An annotation of '@{$method}-required' needs to either have a ".
                         "value set, or a conditional statement enclosed in back-ticks (`) to be evaluated at runtime.");
                 }
 
@@ -335,9 +330,7 @@ class RestObject extends AutoObject implements \JsonSerializable
      * @param array|null $excluded A reference array used to store the excluded properties for later use.
      * @param array $exceptions An optional array of exceptions to be included even without the proper annotations.
      * @return RestObject Returns the newly minimalized RestObject, which has any non-required fileds set to null.
-     * @throws AnnotationReaderException
-     * @throws RestObjectException
-     * @throws \ReflectionException
+     * @throws \Exception
      *
      * @deprecated
      * @todo Determine if this method is really necessary and complete it as needed!
@@ -347,7 +340,7 @@ class RestObject extends AutoObject implements \JsonSerializable
         $supported = [ "post", /*"put",*/ "patch" ];
 
         if(!in_array($method, $supported))
-            throw new RestObjectException("The '$method' method is not currently supported by RestObject::minimal()\n");
+            throw new \Exception("[MVQN\REST\RestObject] The '$method' method is not currently supported by RestObject::minimal()\n");
 
         // Setup the Reflection instance for the calling class.
         $class = get_called_class();

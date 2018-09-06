@@ -41,9 +41,9 @@ final class Strings
         return (strpos($haystack, $needle) !== false);
     }
 
-    public static function splitLast(string $haystack, string $delimiter): string
+    public static function splitLast(string $haystack, string $delimiter = "\\"): string
     {
-        $parts = explode("\\", $haystack);
+        $parts = explode($delimiter, $haystack);
         return array_pop($parts);
     }
 

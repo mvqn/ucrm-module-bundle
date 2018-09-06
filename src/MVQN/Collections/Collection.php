@@ -35,7 +35,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
      *
      * @param string $type
      * @param Collectible[]|null $elements
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function __construct(string $type, ?array $elements = [])
     {
@@ -43,7 +43,8 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
             $elements = [];
 
         if(!is_subclass_of($type, Collectible::class, true))
-            throw new CollectionException("The specified type: '$type' must extend '".Collectible::class."'!");
+            throw new \Exception("[MVQN\Collections\Collection] The specified type: '$type' must extend '".
+                Collectible::class."'!");
 
         $this->type = $type;
         //$this->elements = [];
@@ -164,7 +165,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param int $index
      * @return Collectible|null
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function at(int $index): ?Collectible
     {
@@ -184,7 +185,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
 
     /**
      * @return Collectible|null
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function last(): ?Collectible
     {
@@ -193,7 +194,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
 
     /**
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function all(): Collection
     {
@@ -203,12 +204,13 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param array $range
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function every(array $range): Collection
     {
         if(!$range)
-            throw new CollectionException("The range: '".json_encode($range, JSON_UNESCAPED_SLASHES)."' is invalid!");
+            throw new \Exception("[MVQN\Collections\Collection] The range: '".
+                json_encode($range, JSON_UNESCAPED_SLASHES)."' is invalid!");
 
         $collection = [];
 
@@ -222,7 +224,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
      * @param int $index
      * @param int $count
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function slice(int $index, int $count): Collection
     {
@@ -239,7 +241,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param Collectible|null $element
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function push(?Collectible $element): Collection
     {
@@ -253,7 +255,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
      *
      * @param Collectible[] $elements An array of Collectible objects.
      * @return Collection Returns the current Collection after the appended values.
-     * @throws CollectionException Throws an exception if there were any issues appneding the elements.
+     * @throws \Exception Throws an exception if there were any issues appending the elements.
      */
     public function pushMany(array $elements): Collection
     {
@@ -267,7 +269,8 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
                 $element = new $this->type($element);
 
                 if (get_class($element) != $this->type && !is_subclass_of($element, $this->type, true))
-                    throw new CollectionException("The element type: '" . get_class($element) . "' must match or extend '" .
+                    throw new \Exception("[MVQN\Collections\Collection] The element type: '".
+                        get_class($element)."' must match or extend '" .
                         $this->type . "'!");
 
                 $this->elements[] = $element;
@@ -276,17 +279,18 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
             if (is_object($element))
             {
                 if (get_class($element) != $this->type && !is_subclass_of($element, $this->type, true))
-                    throw new CollectionException("The element type: '" . get_class($element) . "' must match or extend '" .
+                    throw new \Exception("[MVQN\Collections\Collection] The element type: '".
+                        get_class($element)."' must match or extend '" .
                         $this->type . "'!");
 
-                // THEN it does not need to be instantiated, simply appen it!
+                // THEN it does not need to be instantiated, simply append it!
                 $this->elements[] = $element;
             }
             else
             {
                 if (get_class($element) != $this->type && !is_subclass_of($element, $this->type, true))
-                    throw new CollectionException("The element type: '" . get_class($element) . "' must match or extend '" .
-                        $this->type . "'!");
+                    throw new \Exception("[MVQN\Collections\Collection] The element type: '".
+                        get_class($element) . "' must match or extend '" . $this->type . "'!");
 
                 // OTHERWISE, simply add the type!
                 $this->elements[] = $elements;
@@ -300,7 +304,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param Collectible|null $element
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function unshift(?Collectible $element): Collection
     {
@@ -311,7 +315,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param array $elements
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function unshiftMany(array $elements): Collection
     {
@@ -325,7 +329,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
      * @param int $index
      * @param Collectible|null $element
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function insert(int $index, ?Collectible $element): Collection
     {
@@ -336,7 +340,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
      * @param int $index
      * @param Collectible[] $elements
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function insertMany(int $index, array $elements): Collection
     {
@@ -347,7 +351,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param int $index
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function remove(int $index): Collection
     {
@@ -358,7 +362,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
      * @param int $index
      * @param int $count
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function removeMany(int $index, int $count): Collection
     {
@@ -378,7 +382,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
 
     /**
      * @return Collectible|null
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function pop(): ?Collectible
     {
@@ -388,12 +392,13 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param int $count
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function popMany(int $count): Collection
     {
         if($count > $this->count())
-            throw new CollectionException("The count '$count' is more than the number of elements in this Collection!");
+            throw new \Exception("[MVQN\Collections\Collection] The count '$count' is more than the number of ".
+                "elements in this Collection!");
 
         if($count === $this->count())
             return $this->all();
@@ -408,7 +413,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
 
     /**
      * @return Collectible|null
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function shift(): ?Collectible
     {
@@ -418,12 +423,13 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param int $count
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function shiftMany(int $count): Collection
     {
         if($count > $this->count())
-            throw new CollectionException("The count '$count' is more than the number of elements in this Collection!");
+            throw new \Exception("[MVQN\Collections\Collection] The count '$count' is more than the number of ".
+                "elements in this Collection!");
 
         if($count === $this->count())
             return $this->all();
@@ -440,7 +446,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
      * @param Collectible $element
      * @param int|null $index
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function delete(Collectible $element, ?int &$index = null): Collection
     {
@@ -454,15 +460,15 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
      * @param Collectible[] $elements
      * @param array|null $indices
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function deleteMany(array $elements, ?array &$indices = null): Collection
     {
         foreach($this->elements as $index => $element)
         {
             if(!is_subclass_of($element, $this->type, true) && !is_a($element, $this->type))
-                throw new CollectionException("The element type: '".get_class($element)."' must match or extend '".
-                    $this->type."'!");
+                throw new \Exception("[MVQN\Collections\Collection] The element type: '".
+                    get_class($element)."' must match or extend '". $this->type."'!");
 
             // IF the element exists in the Collection...
             if(!empty(array_intersect([$element], $elements)))
@@ -490,7 +496,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param callable $handler
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function each(callable $handler): Collection
     {
@@ -519,7 +525,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param callable $evaluator
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function find(callable $evaluator): Collection
     {
@@ -543,7 +549,7 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
      * @param string $property
      * @param $value
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function where(string $property, $value): Collection
     {
@@ -553,15 +559,15 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param Collectible[] $comparisons
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function whereAll(array $comparisons): Collection
     {
         foreach($comparisons as $property => $value)
         {
             if(!property_exists($this->type, $property))
-                throw new CollectionException("The comparison could not be run, as the property '$property' does not ".
-                "exist on the Collectible '{$this->type}'");
+                throw new \Exception("[MVQN\Collections\Collection] The comparison could not be run, as the property '".
+                    "$property' does not exist on the Collectible '{$this->type}'");
         }
 
         return $this->find(
@@ -571,9 +577,9 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
                 {
                     $getter = "get".ucfirst($property);
 
-                    if(!method_exists($current, $getter))
-                        throw new CollectionException("Cannot compare a private/protected property directly and no ".
-                        "'{$current}->{$getter}()' method could be found!");
+                    //if(!method_exists($current, $getter))
+                    //    throw new CollectionException("Cannot compare a private/protected property directly and no ".
+                    //    "'{$current}->{$getter}()' method could be found!");
 
                     // TODO: Handle code to check for private/protected properties ???
 
@@ -589,15 +595,15 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param Collectible[] $comparisons
      * @return Collection
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function whereAny(array $comparisons): Collection
     {
         foreach($comparisons as $property => $value)
         {
             if(!property_exists($this->type, $property))
-                throw new CollectionException("The comparison could not be run, as the property '$property' does not ".
-                    "exist on the Collectible '{$this->type}'");
+                throw new \Exception("[MVQN\Collections\Collection] The comparison could not be run, as the property '".
+                    "$property' does not exist on the Collectible '{$this->type}'");
         }
 
         return $this->find(
@@ -607,9 +613,9 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
                 {
                     $getter = "get".ucfirst($property);
 
-                    if(!method_exists($current, $getter))
-                        throw new CollectionException("Cannot compare a private/protected property directly and no ".
-                            "'{$current}->{$getter}()' method could be found!");
+                    //if(!method_exists($current, $getter))
+                    //    throw new CollectionException("Cannot compare a private/protected property directly and no ".
+                    //        "'{$current}->{$getter}()' method could be found!");
 
                     // TODO: Handle code to check for private/protected properties ???
 
@@ -670,12 +676,12 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param int $index
      * @return int
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function validIndex(int $index): int
     {
         if(!$this->hasIndex($index))
-            throw new CollectionException("The index: '$index' is invalid!");
+            throw new \Exception("[MVQN\Collections\Collection] The index: '$index' is invalid!");
 
         return $index;
     }
@@ -684,15 +690,15 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
     /**
      * @param Collectible[] $elements
      * @return Collectible[]
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function validElements(array $elements): array
     {
         foreach($elements as $element)
         {
             if(get_class($element) != $this->type && !is_subclass_of($element, $this->type, true))
-                throw new CollectionException("The element type: '".get_class($element)."' must match or extend '".
-                    $this->type."'!");
+                throw new \Exception("[MVQN\Collections\Collection] The element type: '".get_class($element).
+                    "' must match or extend '". $this->type."'!");
         }
 
         return $elements;

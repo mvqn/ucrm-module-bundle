@@ -238,7 +238,7 @@ class AnnotationReader
      * @param string $class The class name to be used for the lookup.
      * @return string|null Returns the fully qualified class name.
      *
-     * @throws AnnotationReaderException
+     * @throws \Exception
      */
     public function findAnnotationClass(string $class): ?string
     {
@@ -259,8 +259,8 @@ class AnnotationReader
         if ($annotationClass !== "" && class_exists($annotationClass)) {
             // Also make certain the class extends 'Annotation'...
             if (!is_subclass_of($annotationClass, Annotation::class, true)) {
-                throw new AnnotationReaderException("The annotation class '$annotationClass' must extend '" .
-                    Annotation::class . "'!");
+                throw new \Exception("[MVQN\Annotations\AnnotationReader] The annotation class '$annotationClass' ".
+                    "must extend '".Annotation::class."'!");
             }
 
             // Return the fully qualified class, if nothing went wrong!
@@ -268,8 +268,8 @@ class AnnotationReader
         }
 
         // If nothing else matched, then throw an exception!
-        throw new AnnotationReaderException("The annotation class '$class' must exist and extend '" .
-            Annotation::class . "'!");
+        throw new \Exception("[MVQN\Annotations\AnnotationReader] The annotation class '$class' must exist and ".
+            "extend '".Annotation::class . "'!");
         //return null;
     }
 
@@ -384,8 +384,8 @@ class AnnotationReader
 
         // Ensure the end-user has included a valid DocBlock for this property!
         if($var === null)
-            throw new AnnotationReaderException("AnnotationReader->getPropertyInfo() could not find a valid ".
-                "'@var [type] \$[name] [description]' entry in the DocBlock");
+            throw new \Exception("[MVQN\Annotations\AnnotationReader] AnnotationReader->getPropertyInfo() could not ".
+                "find a valid '@var [type] \$[name] [description]' entry in the DocBlock");
 
         // Initialize a collection to store the information about this property.
         $info = [];

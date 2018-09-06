@@ -32,7 +32,7 @@ final class RestClient
      *
      * @param string $url The base URL for which to prefix all REST calls.
      * @return string Returns the base URL that is currently set.
-     * @throws RestClientException Throws an exception if the base URL is not set and none has been provided.
+     * @throws \Exception Throws an exception if the base URL is not set and none has been provided.
      */
     public static function setBaseUrl(string $url = ""): string
     {
@@ -42,7 +42,7 @@ final class RestClient
             // AND the current URL is not set...
             if (self::$_baseUrl === "")
                 // ... Throw an exception!
-                throw new RestClientException(
+                throw new \Exception("[MVQN\REST\ResClient] ".
                     "'baseUrl' must be set by RestClient::baseUrl() before calling any RestClient methods!");
         }
         else
@@ -118,7 +118,7 @@ final class RestClient
      *
      * @param string $endpoint The endpoint at which to make the request.
      * @return array Returns an associative array of the JSON result.
-     * @throws RestClientException Throws an exception if there were errors during the REST request/response phase.
+     * @throws \Exception Throws an exception if there were errors during the REST request/response phase.
      */
     public static function get(string $endpoint): array
     {
@@ -130,7 +130,7 @@ final class RestClient
 
         // Check to see if there were any errors...
         if(!$response)
-            throw new RestClientException("The REST request failed with the following error(s): ".curl_error($curl));
+            throw new \Exception("[MVQN\REST\ResClient] The REST request failed with the following error(s): ".curl_error($curl));
 
         // Close the cURL session.
         curl_close($curl);
@@ -144,7 +144,7 @@ final class RestClient
      *
      * @param array $endpoints An array of endpoints to use for the multiple requests.
      * @return array Returns an associative array of the JSON results.
-     * @throws RestClientException Throws an exception if there were errors during the REST request/response phase.
+     * @throws \Exception Throws an exception if there were errors during the REST request/response phase.
      */
     public static function getMany(array $endpoints): array
     {
@@ -176,7 +176,7 @@ final class RestClient
 
             // Check to see if there were any errors...
             if(!$response)
-                throw new RestClientException(
+                throw new \Exception("[MVQN\REST\ResClient] ".
                     "The REST request failed with the following error(s): ".curl_error($curls[$i]));
 
             //  Append the successful response to the array of responses.
@@ -199,9 +199,9 @@ final class RestClient
      * Sends a HTTP POST Requests to the specified endpoint of the base URL.
      *
      * @param string $endpoint The endpoint at which to make the request.
-     * @param string $data A JSON encoded string of data to provide to the endpoint.
+     * @param array $data A JSON encoded string of data to provide to the endpoint.
      * @return array Returns an associative array of the JSON result.
-     * @throws RestClientException Throws an exception if there were errors during the REST request/response phase.
+     * @throws \Exception Throws an exception if there were errors during the REST request/response phase.
      */
     public static function post(string $endpoint, array $data): array
     {
@@ -219,7 +219,7 @@ final class RestClient
 
         // Check to see if there were any errors...
         if(!$response)
-            throw new RestClientException("The REST request failed with the following error(s): ".curl_error($curl));
+            throw new \Exception("[MVQN\REST\ResClient] The REST request failed with the following error(s): ".curl_error($curl));
 
         // Close the cURL session.
         curl_close($curl);
@@ -234,12 +234,12 @@ final class RestClient
      * @param array $endpoints An array of endpoints to use for the multiple requests.
      * @param array[] $data An array of associative arrays of data to provide to the endpoints and converted to JSON.
      * @return array Returns an associative array of the JSON results.
-     * @throws RestClientException Throws an exception if there were errors during the REST request/response phase.
+     * @throws \Exception Throws an exception if there were errors during the REST request/response phase.
      */
     public static function postMany(array $endpoints, array $data): array
     {
         if(count($endpoints) !== count($data))
-            throw new RestClientException(
+            throw new \Exception("[MVQN\REST\ResClient] ".
                 "Each endpoint in a RestClient::postMany() call must have an accompanying data element.");
 
         // Create a cURL multi-session handler and an array to store each instance of the cURL sessions.
@@ -276,7 +276,7 @@ final class RestClient
 
             // Check to see if there were any errors...
             if(!$response)
-                throw new RestClientException(
+                throw new \Exception("[MVQN\REST\ResClient] ".
                     "The REST request failed with the following error(s): ".curl_error($curls[$i]));
 
             //  Append the successful response to the array of responses.
@@ -299,9 +299,9 @@ final class RestClient
      * Sends a HTTP PATCH Request to the specified endpoint of the base URL.
      *
      * @param string $endpoint The endpoint at which to make the request.
-     * @param string $data A JSON encoded string of data to provide to the endpoint.
+     * @param array $data A JSON encoded string of data to provide to the endpoint.
      * @return array Returns an associative array of the JSON result.
-     * @throws RestClientException Throws an exception if there were errors during the REST request/response phase.
+     * @throws \Exception Throws an exception if there were errors during the REST request/response phase.
      */
     public static function patch(string $endpoint, array $data): array
     {
@@ -320,7 +320,7 @@ final class RestClient
 
         // Check to see if there were any errors...
         if(!$response)
-            throw new RestClientException("The REST request failed with the following error(s): ".curl_error($curl));
+            throw new \Exception("[MVQN\REST\ResClient] The REST request failed with the following error(s): ".curl_error($curl));
 
         // Close the cURL session.
         curl_close($curl);

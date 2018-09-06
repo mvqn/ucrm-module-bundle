@@ -20,7 +20,7 @@ final class Patterns
      * @param array $params
      * @param string $token
      * @return string
-     * @throws PatternsException
+     * @throws \Exception
      */
     public static function interpolateUrl(string $pattern, array $params, string $token = ":"): string
     {
@@ -29,10 +29,10 @@ final class Patterns
             return "";
 
         if ($token === null || $token === "")
-            throw new PatternsException("A TOKEN must be provided to pattern match!");
+            throw new \Exception("[MVQN\Common\Patterns] A TOKEN must be provided to pattern match!");
 
         if (strpos($pattern, " ") !== false)
-            throw new PatternsException("The \$pattern must not contain any spaces!");
+            throw new \Exception("[MVQN\Common\Patterns] The \$pattern must not contain any spaces!");
 
         $segments = [];
 
@@ -47,7 +47,7 @@ final class Patterns
             foreach($parts as $part)
             {
                 if($part === "" && $counter !== 0)
-                    throw new PatternsException("The \$pattern must be in a valid URL format.");
+                    throw new \Exception("[MVQN\Common\Patterns] The \$pattern must be in a valid URL format.");
 
                 if (strpos($part, $token) !== 0)
                 {
@@ -59,7 +59,7 @@ final class Patterns
                 $part = substr($part, 1, strlen($part) - 1);
 
                 if(!array_key_exists($part, $params))
-                    throw new PatternsException("Parameter '$part' was not found in \$params!");
+                    throw new \Exception("[MVQN\Common\Patterns] Parameter '$part' was not found in \$params!");
 
                 $segments[] = $params[$part];
 

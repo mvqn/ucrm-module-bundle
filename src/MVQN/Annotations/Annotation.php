@@ -52,7 +52,7 @@ abstract class Annotation extends Collectible
      * @param array $value
      * @param int $mode
      * @return array
-     * @throws AnnotationReaderException
+     * @throws \Exception
      */
     protected function combineResults(array $existing, string $name, $value,
         int $mode = Annotation::COMBINE_MODE_OVERWRITE): array
@@ -70,7 +70,7 @@ abstract class Annotation extends Collectible
                     break;
 
                 default:
-                    throw new AnnotationReaderException("Unsupported MODE: '$mode'");
+                    throw new \Exception("[MVQN\Annotations\AnnotationReader] Unsupported MODE: '$mode'");
             }
 
         }

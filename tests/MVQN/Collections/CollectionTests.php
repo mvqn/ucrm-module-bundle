@@ -1,6 +1,6 @@
 <?php
 
-use MVQN\Collections\{Collection, CollectionException};
+use MVQN\Collections\Collection;
 use Tests\MVQN\Collections\Examples\{Country, State};
 
 class CollectionTests extends PHPUnit\Framework\TestCase
@@ -203,14 +203,15 @@ class CollectionTests extends PHPUnit\Framework\TestCase
 
     public function testCollectionException()
     {
-        $this->expectException(CollectionException::class);
+        $this->expectException(\Exception::class);
 
         try
         {
             $state = new State([ "countryId" => 1, "name" => "State1", "code" => "S1" ]);
             $collection = new Collection(Country::class, [ $state ]);
+            echo $collection."\n";
         }
-        catch(CollectionException $ce)
+        catch(\Exception $ce)
         {
             echo $ce->getMessage();
             throw $ce;

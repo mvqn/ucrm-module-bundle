@@ -28,6 +28,9 @@ use Tests\MVQN\Common\Examples\Helpers\CountryHelper;
  *
  * @method string|null getName()
  * @method string|null getCode()
+ *
+ * @method string|null getTest()
+ * @method Country setTest(string $test)
  */
 final class Country extends Endpoint
 {
@@ -52,8 +55,11 @@ final class Country extends Endpoint
     protected $code;
 
 
-
-
+    /**
+     * @var string
+     *
+     */
+    protected $test;
 
 
 

@@ -37,9 +37,6 @@ class AutoObject extends Collectible
     ];
 
 
-    private const ANNOTATION_READONLY = "readonly";
-    private const ANNOTATION_WRITEONLY = "writeonly";
-
 
 
 
