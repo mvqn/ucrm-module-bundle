@@ -24,9 +24,9 @@ class AnnotationReader
     public const ANNOTATION_TYPE_ANY                = 7;
 
     protected const ANNOTATION_PATTERN              = "/(?:\*)(?:[\t ]*)?@([\w\_\-\\\\]+)(?:[\t ]*)?(.*)$/m";
-    protected const ANNOTATION_PATTERN_JSON         = "/ (\{.*\})/";
-    protected const ANNOTATION_PATTERN_ARRAY        = "/ (\[.*\])/";
-    protected const ANNOTATION_PATTERN_EVAL         = "/ (\`.*\`)/";
+    protected const ANNOTATION_PATTERN_JSON         = "/(\{.*\})/";
+    protected const ANNOTATION_PATTERN_ARRAY        = "/(\[.+\])/";
+    protected const ANNOTATION_PATTERN_EVAL         = "/(\`.*\`)/";
 
     protected const ANNOTATION_PATTERN_ARRAY_NAMED  = "/([\w\_\-]*)(?:\[\])/";
 
