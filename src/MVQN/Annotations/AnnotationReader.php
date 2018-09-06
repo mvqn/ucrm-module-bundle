@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace MVQN\Annotations;
 
-use MVQN\Common\{Arrays, ArraysException, Casing, Strings};
-use phpDocumentor\Reflection\Types\Resource_;
+use MVQN\Common\Strings;
 
 /**
  * Class AnnotationReader
@@ -111,6 +110,7 @@ class AnnotationReader
                     {
                         // TODO: Determine the best way to handle this scenario!
                         //$value = eval("return ".$value.";");
+                        echo "";
                     }
 
             // Cleanup both arrays and JSON values, removing leading and trailing whitespace.
@@ -235,7 +235,6 @@ class AnnotationReader
     /**
      * Returns the fully qualified class name, even if a non-qualified or aliased class name is provided.
      *
-     * @param array $uses An array of 'use' statements, as provided by <b>ClassAnnotationReader->getUseStatements()</b>.
      * @param string $class The class name to be used for the lookup.
      * @return string|null Returns the fully qualified class name.
      *
@@ -284,7 +283,12 @@ class AnnotationReader
 
     public function getClassAnnotations(): array
     {
-        return $this->parse(self::ANNOTATION_TYPE_CLASS, $this->getReflectedClass()->getDocComment());
+        $docblock = $this->getReflectedClass()->getDocComment();
+
+        if(!$docblock)
+            return [];
+
+        return $this->parse(self::ANNOTATION_TYPE_CLASS, $docblock);
     }
 
     public function getClassAnnotation(string $name): array
@@ -329,6 +333,10 @@ class AnnotationReader
     public function getMethodAnnotations(string $name): array
     {
         $docblock = $this->getReflectedMethod($name)->getDocComment();
+
+        if(!$docblock)
+            return [];
+
         $params = $this->parse(self::ANNOTATION_TYPE_METHOD, $docblock);
 
         return $params;
@@ -365,6 +373,10 @@ class AnnotationReader
     public function getPropertyAnnotations(string $name): array
     {
         $docblock = $this->getReflectedProperty($name)->getDocComment();
+
+        if(!$docblock)
+            return [];
+
         $params = $this->parse(self::ANNOTATION_TYPE_PROPERTY, $docblock);
 
         // Get the line containing the '@var <type> ...' declaration.

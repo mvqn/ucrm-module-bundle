@@ -15,12 +15,20 @@ class AutoObjectTests extends PHPUnit\Framework\TestCase
 
         //$name = $country->name;
 
-        $annotations = new AnnotationReader(Country::class);
-        $test = $annotations->getPropertyAnnotations("code");
+        //$annotations = new AnnotationReader(Country::class);
+        //$test = $annotations->getPropertyAnnotations("code");
 
-        $valid = $country->validate();
+        //$valid = $country->validate();
 
         //echo $name."\n";
+
+        echo $country->getName()."\n";
+        echo $country->getBoth()."\n";
+
+        //$country->setName("Test");
+        //echo $country->getName()."\n";
+
+        echo $country->getId()."\n";
 
         echo "";
     }

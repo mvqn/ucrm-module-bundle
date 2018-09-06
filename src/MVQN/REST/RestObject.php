@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace MVQN\REST;
 
 use MVQN\Annotations\{AnnotationReader, AnnotationReaderException};
-use MVQN\Collections\Collectible;
 use MVQN\Common\Arrays;
+use MVQN\Common\AutoObject;
 use MVQN\Common\Strings;
 
 /**
@@ -14,7 +14,7 @@ use MVQN\Common\Strings;
  * @package MVQN\REST
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  */
-class RestObject extends Collectible implements \JsonSerializable
+class RestObject extends AutoObject implements \JsonSerializable
 {
 // =================================================================================================================
     // CONSTANTS
@@ -57,36 +57,7 @@ class RestObject extends Collectible implements \JsonSerializable
 
 
 
-    public function __call(string $name, array $args)
-    {
-        if(Strings::startsWith($name, "get"))
-        {
-            $property = lcfirst(str_replace("get", "", $name));
 
-            if(property_exists($this, $property))
-                return $this->{$property};
-            else
-                throw new \Exception("");
-        }
-
-        if(Strings::startsWith($name, "set"))
-        {
-            $property = lcfirst(str_replace("set", "", $name));
-
-            if(property_exists($this, $property))
-                $this->{$property} = $args[0];
-            else
-                throw new \Exception("");
-        }
-
-        // Handle all other methods as usual!
-
-    }
-
-    public static function __callStatic(string $name, array $args)
-    {
-
-    }
 
 
 

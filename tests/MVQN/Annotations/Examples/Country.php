@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\MVQN\Annotations\Examples;
 
+use MVQN\Annotations\AnnotatedClass;
+
 /**
  * Class Country
  *
@@ -12,7 +14,7 @@ namespace Tests\MVQN\Annotations\Examples;
  *
  * @endpoints { "get": "/countries", "getById": "/countries/:id" }
  */
-final class Country
+final class Country extends AnnotatedClass
 {
     // =================================================================================================================
     // PROPERTIES
