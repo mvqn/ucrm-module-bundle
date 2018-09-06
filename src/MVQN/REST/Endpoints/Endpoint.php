@@ -81,14 +81,14 @@ abstract class Endpoint extends RestObject
         $annotations = new AnnotationReader($class);
         $endpoints = $annotations->getClassAnnotation("endpoints");
 
-        $endpoint = array_key_exists("post", $endpoints) ? $endpoints["post"] : null;
+        $endpoint = array_key_exists("post", $endpoints) ? $endpoints["post"] : "";
 
-        if($endpoint === null || $endpoint === [])
+        if($endpoint === "")
             throw new \Exception("[MVQN\REST\Endpoints\Endpoint] An annotation like '@endpoints { \"post\": \"/examples\" }' on the '$class' ".
                 "class must be declared in order to resolve this endpoint'");
 
         // Interpolate the URL patterns against any provided parameters.
-        $endpoint = Patterns::interpolateUrl($endpoint[0], $params);
+        $endpoint = Patterns::interpolateUrl($endpoint, $params);
 
         // Get an array of all Model properties, with any that do not belong in the POST method removed!
         $data = ($data !== null) ? $data->toArray("post") : [];

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace MVQN\Annotations;
 
 use MVQN\Common\Strings;
+use MVQN\REST\RestObject;
 
 /**
  * Class AnnotationReader
@@ -255,14 +256,27 @@ class AnnotationReader
             $annotationClass = $this->uses[$key];
         }
 
+        // Determine the current classes namespace...
+        $namespaceParts = explode("\\", $this->class);
+        array_pop($namespaceParts);
+        $namespace = implode("\\", $namespaceParts)."\\";
+
+        // Handle class names living in the same namespace...
+        if($annotationClass === "" && class_exists($namespace.$class))
+            $annotationClass = $namespace.$class;
+
         // Make certain the class exists before continuing...
-        if ($annotationClass !== "" && class_exists($annotationClass)) {
+        if ($annotationClass !== "" && class_exists($annotationClass))
+        {
+            // TODO: Handle the situation where '@var ClassName' is not meant to be an Annotation class...
+
+            /*
             // Also make certain the class extends 'Annotation'...
             if (!is_subclass_of($annotationClass, Annotation::class, true)) {
                 throw new \Exception("[MVQN\Annotations\AnnotationReader] The annotation class '$annotationClass' ".
                     "must extend '".Annotation::class."'!");
             }
-
+            */
             // Return the fully qualified class, if nothing went wrong!
             return $annotationClass;
         }
